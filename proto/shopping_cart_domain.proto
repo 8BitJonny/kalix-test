@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package shopping.cart.domain;
+
+message CartState {
+    repeated LineItem items = 1;
+}
+  
+message LineItem {
+    string productId = 1;
+    string name = 2;
+    int32 quantity = 3;
+}
+
+message ItemAdded {
+    LineItem item = 1;
+}
+  
+message ItemRemoved {
+    string productId = 1;
+}

@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package counter.api;
+
+import "google/api/annotations.proto";
+import "kalix/annotations.proto";
+
+service CounterService {
+    option (kalix.codegen) = {
+        value_entity: {
+          name: "counter.domain.Counter"
+          entity_type: "counter"
+          state: "counter.domain.CounterState"
+        }
+      };
+
+    rpc UpCounter(UpByOne) returns (Counter) {
+        option (google.api.http) = { post: "/counter/{counter_id}/up" };
+    }
+
+    rpc DownCounter(DownByOne) returns (Counter) {
+        option (google.api.http) = { post: "/counter/{counter_id}/down" };
+    }
+
+    rpc HalfCounter(Half) returns (Counter) {
+        option (google.api.http) = { post: "/counter/{counter_id}/half" };
+    }
+
+    rpc ResetCounter(Reset) returns (Counter) {
+        option (google.api.http) = { post: "/counter/{counter_id}/reset" };
+    }
+
+    rpc GetCounter(Get) returns (Counter) {
+        option (google.api.http) = { get: "/counter/{counter_id}" };
+    }
+
+    rpc SetCounter(Set) returns (Counter) {
+        option (google.api.http) = {
+            post: "/counter/{counter_id}"
+            body: "*"
+        };
+    }
+}
+
+
+message Counter {
+    string name = 1;
+    int32 value = 2;
+}
+
+message UpByOne {
+    string counter_id = 1 [(kalix.field).entity_key = true];
+}
+
+message DownByOne {
+    string counter_id = 1 [(kalix.field).entity_key = true];
+}
+
+message Half {
+    string counter_id = 1 [(kalix.field).entity_key = true];
+}
+
+message Reset {
+    string counter_id = 1 [(kalix.field).entity_key = true];
+}
+
+message Get {
+    string counter_id = 1 [(kalix.field).entity_key = true];
+}
+
+message Set {
+    string counter_id = 1 [(kalix.field).entity_key = true];
+    int32 value = 2;
+}
